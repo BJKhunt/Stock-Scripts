@@ -36,19 +36,17 @@ MongoClient.connect("mongodb://localhost:27017/", function (err, db) {
                 })
                 .catch((err) => console.log(err))
         });
-
-    });
     }
 
-app.get('/', (req, res) => {
-    axios.get('https://api.polygon.io/v1/meta/symbols/SINA/company?&apiKey=EdpUZIewOC_O88OL9yuLdkXuSfgdPst4')
-        .then(response => {
+    app.get('/', (req, res) => {
+        axios.get('https://api.polygon.io/v1/meta/symbols/SINA/company?&apiKey=EdpUZIewOC_O88OL9yuLdkXuSfgdPst4')
+            .then(response => {
 
-            console.log(response);
-            return res.status(200).json(response.data);
-        })
-        .catch((err) => console.log(err))
-});
+                console.log(response);
+                return res.status(200).json(response.data);
+            })
+            .catch((err) => console.log(err))
+    });
 
 });
 
