@@ -1,6 +1,9 @@
 /* const express = require('express');
 const axios = require('axios');
 const cors = require('cors'); */
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+require('dotenv').config();
 import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
@@ -13,7 +16,7 @@ app.use(cors());
 
 
 app.get('/', (req, res) => {
-    axios.get('https://api.polygon.io/v1/meta/symbols/SINA/company?&apiKey=EdpUZIewOC_O88OL9yuLdkXuSfgdPst4')
+    axios.get('https://api.polygon.io/v1/meta/symbols/SINA/company?&apiKey=' + process.env.POLYGON_API_KEY)
         .then(response => {
 
             console.log(response);

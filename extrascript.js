@@ -1,7 +1,7 @@
 //var Alpaca = require('@alpacahq/alpaca-trade-api');
 import Alpaca from '@alpacahq/alpaca-trade-api';
-const API_KEY = 'PK3FXI9WQ3EZ3F70F0C1';
-const API_SECRET = 'oKItsTlpvrE75tNhQI1mqXulcpGj68FceNqwc435';
+const API_KEY = process.env.ALPACA_API_KEY;
+const API_SECRET = process.env.ALPACA_API_SECRET;
 const USE_POLYGON = false;
 import axios from 'axios';
 
@@ -60,7 +60,7 @@ MongoClient.connect("mongodb://localhost:27017/", function (err, db) {
             .then((result) => {
                 console.log(result);
                 console.log(result.symbol);
-                axios.get('https://api.polygon.io/v1/meta/symbols/' + result.symbol + '/company?&apiKey=EdpUZIewOC_O88OL9yuLdkXuSfgdPst4')
+                axios.get('https://api.polygon.io/v1/meta/symbols/' + result.symbol + '/company?&apiKey=' + process.env.POLYGON_API_KEY)
                     .then(response => {
                         var myquery = { _id: result._id };
                         //console.log(i);

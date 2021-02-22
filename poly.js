@@ -12,7 +12,7 @@ async function hello() {
         for (var k = 0; k < 200; k += 5) {
             var data = [];
             for (var i = k; i < k + 5; i++) {
-                axios.get('https://api.polygon.io/v1/meta/symbols/' + result[i].symbol + '/company?&apiKey=EdpUZIewOC_O88OL9yuLdkXuSfgdPst4')
+                axios.get('https://api.polygon.io/v1/meta/symbols/' + result[i].symbol + '/company?&apiKey='+process.env.POLYGON_API_KEY)
                     .then(response => {
                         data.push(response.data);
                     })
@@ -44,7 +44,7 @@ async function dummy() {
             else {
                 var data = [];
                 for (var i = k; i < k + 4; i++) {
-                    axios.get('https://api.polygon.io/v1/meta/symbols/' + result[i].symbol + '/company?&apiKey=EdpUZIewOC_O88OL9yuLdkXuSfgdPst4')
+                    axios.get('https://api.polygon.io/v1/meta/symbols/' + result[i].symbol + '/company?&apiKey=' + process.env.POLYGON_API_KEY)
                         .then(response => {
                             data.push(response.data);
                         })

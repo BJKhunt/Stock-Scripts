@@ -1,6 +1,9 @@
 /* const express = require('express');
 const axios = require('axios');
 const cors = require('cors'); */
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+require('dotenv').config();
 import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
@@ -23,7 +26,7 @@ MongoClient.connect("mongodb://localhost:27017/", function (err, db) {
             if (err) throw err;
             console.log(result);
             console.log(result[0].symbol);
-            axios.get('https://api.polygon.io/v1/meta/symbols/' + result[0].symbol + '/company?&apiKey=EdpUZIewOC_O88OL9yuLdkXuSfgdPst4')
+            axios.get('https://api.polygon.io/v1/meta/symbols/' + result[0].symbol + '/company?&apiKey=' + process.env.POLYGON_API_KEY)
                 .then(response => {
                     var myquery = { _id: i };
                     var newvalues = { $set: { description: response.data.description } };
@@ -39,7 +42,7 @@ MongoClient.connect("mongodb://localhost:27017/", function (err, db) {
     }
 
     app.get('/', (req, res) => {
-        axios.get('https://api.polygon.io/v1/meta/symbols/SINA/company?&apiKey=EdpUZIewOC_O88OL9yuLdkXuSfgdPst4')
+        axios.get('https://api.polygon.io/v1/meta/symbols/SINA/company?&apiKey=' + process.env.POLYGON_API_KEY)
             .then(response => {
 
                 console.log(response);

@@ -1,6 +1,6 @@
 var Alpaca = require('@alpacahq/alpaca-trade-api');
-const API_KEY = 'PK3FXI9WQ3EZ3F70F0C1';
-const API_SECRET = 'oKItsTlpvrE75tNhQI1mqXulcpGj68FceNqwc435';
+const API_KEY = process.env.ALPACA_API_KEY;
+const API_SECRET = process.env.ALPACA_API_SECRET;
 const USE_POLYGON = false;
 
 
