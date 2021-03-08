@@ -33,23 +33,55 @@ async function hello() {
     dbo.collection("sp500").find().sort({ "_id": 1 }).toArray(function (err, result) {
         //console.log(result);
         var data = [];
-        for (var i = 400; i < 504; i++) {
+        for (var i = 500; i < 504; i++) {
             data.push(result[i].symbol);
         }
         //console.log(data);
-        alpaca.getBars('1D', data, { limit: 1000, start: '2018-01-01T00:00:00-04:00', end: '2020-12-31T00:00:00-04:00' }).then((response) => {
-            //console.log(new Date(response['AAPL'][99].startEpochTime * 1000))
-            var mainData = [];
+        alpaca.getBars('1D', data, { limit: 1000, start: '2018-01-01T00:00:00-04:00', end: '2021-03-06T00:00:00-04:00' }).then((response) => {
+            var dummy = [];
             for (var sym in data) {
-                var dummy = [];
+                //var dummy = [];
                 for (var bar in response[data[sym]]) {
-                    var obj = { date: new Date(response[data[sym]][bar].startEpochTime * 1000), open: response[data[sym]][bar].openPrice, high: response[data[sym]][bar].highPrice, low: response[data[sym]][bar].lowPrice, close: response[data[sym]][bar].closePrice, volume: response[data[sym]][bar].volume };
-                    dummy.push(obj);
+                    var obj = {};
+                    dummy.push({ symbol: data[sym], date: response[data[sym]][bar].startEpochTime, open: response[data[sym]][bar].openPrice, high: response[data[sym]][bar].highPrice, low: response[data[sym]][bar].lowPrice, close: response[data[sym]][bar].closePrice, volume: response[data[sym]][bar].volume });
                     //console.log(obj)
                 }
-                mainData.push({ symbol: data[sym], data: dummy });
+                /*
+                try {
+                    var res = await dbo.collection("prices").findOne({ symbol: data[sym] });
+                    var finalData = res.data;
+                    console.log(finalData);
+                    var arr3 = [...finalData, ...dummy];
+                    const update = {
+                        "$set": {
+                            "symbol": data[sym],
+                            "data": arr3
+                        }
+                    };
+                    var finalRes = await dbo.collection("prices").updateOne({ symbol: data[sym] }, update);
+                    console.log(finalRes);
+                } catch (error) {
+                    console.log(error);
+                }
+                */
+                /*
+                dbo.collection("prices").findOne({ symbol: data[sym] })
+                    .then((result) => {
+                        var finalData = result.data;
+                        var arr3 = [...finalData, ...dummy];
+                        const update = {
+                            "$set": {
+                                "symbol": data[sym],
+                                "data": arr3
+                            }
+                        };
+                        dbo.collection("prices").updateOne({ symbol: data[sym] }, update)
+                            .then((res) => console.log(res))
+                            .catch((err) => console.log(err));
+                    })
+                    .catch(err => console.log(err));*/
             }
-            dbo.collection("prices").insertMany(mainData, function (err, res) {
+            dbo.collection("prices").insertMany(dummy, function (err, res) {
                 if (err) throw err;
                 console.log(res);
             })
